@@ -13,4 +13,5 @@ type Transaction struct {
 	Operaion  operations.Operation
 	Amount    vos.Money
 	CreatedAt time.Time
+	UpdateAt  time.Time
 }

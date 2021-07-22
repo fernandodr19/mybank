@@ -3,6 +3,7 @@ VERSION=dev
 OS ?= linux
 GIT_COMMIT=$(shell git rev-parse HEAD)
 GIT_BUILD_TIME=$(shell date '+%Y-%m-%d__%I:%M:%S%p')
+DOCKER_COMPOSE_FILE=docker-compose.yml
 
 .PHONY: test
 test:
@@ -42,3 +43,8 @@ test-coverage:
 	@richgo test -failfast -coverprofile=coverage.out ./...
 	@go tool cover -html=coverage.out -o coverage.html
 
+.PHONY: setup-dev
+setup-dev:
+	@echo "Setting up dev environment"
+	@docker-compose -f $(DOCKER_COMPOSE_FILE) down
+	@docker-compose -f $(DOCKER_COMPOSE_FILE) up -d

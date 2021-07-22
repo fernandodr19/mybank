@@ -15,14 +15,26 @@ type Usecase interface {
 	Transact(ctx context.Context, accID vos.AccountID, op operations.Operation, amount vos.Money) (vos.TransactionID, error)
 }
 
+type AccountsClient interface {
+	GetAccountDetails(ctx context.Context, accID vos.AccountID) (entities.Account, error)
+	Deposit(ctx context.Context, accID vos.AccountID, amount vos.Money) error
+	Withdrawal(ctx context.Context, accID vos.AccountID, amount vos.Money) error
+	ReserveCreditLimit(ctx context.Context, accID vos.AccountID, amount vos.Money) error
+}
+
 // Repository of transactions
 type Repository interface {
-	SaveTransaction(context.Context, *entities.Transaction) error
+	SaveTransaction(context.Context, entities.Transaction) (vos.TransactionID, error)
 }
 
 type TransactionsUsecase struct {
+	transactionsRepo Repository
+	accountsClient   AccountsClient
 }
 
-func NewUsecase() *TransactionsUsecase {
-	return &TransactionsUsecase{}
+func NewUsecase(txRepo Repository, accClient AccountsClient) *TransactionsUsecase {
+	return &TransactionsUsecase{
+		transactionsRepo: txRepo,
+		accountsClient:   accClient,
+	}
 }

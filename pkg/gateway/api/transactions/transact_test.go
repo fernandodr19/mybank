@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/fernandodr19/mybank/pkg/domain/entities/operations"
-	usecase "github.com/fernandodr19/mybank/pkg/domain/usecases/transactions"
+	"github.com/fernandodr19/mybank/pkg/domain/usecases/transactions"
 	"github.com/fernandodr19/mybank/pkg/domain/vos"
 	"github.com/fernandodr19/mybank/pkg/gateway/api/middleware"
 	"github.com/fernandodr19/mybank/pkg/gateway/api/responses"
@@ -48,7 +48,7 @@ func Test_ProcessTransaction(t *testing.T) {
 		},
 		{
 			Name:    "acc not found",
-			Handler: transactHandler(usecase.ErrAccountNotFound),
+			Handler: transactHandler(transactions.ErrAccountNotFound),
 			Req: TransactionRequest{
 				AccountID:   "4442011c-e531-4703-b264-c3d700750f81",
 				OperationID: operations.Payment,
@@ -59,7 +59,7 @@ func Test_ProcessTransaction(t *testing.T) {
 		},
 		{
 			Name:    "acc not found",
-			Handler: transactHandler(usecase.ErrAccountNotFound),
+			Handler: transactHandler(transactions.ErrAccountNotFound),
 			Req: TransactionRequest{
 				AccountID:   "4442011c-e531-4703-b264-c3d700750f81",
 				OperationID: operations.Payment,
@@ -70,7 +70,7 @@ func Test_ProcessTransaction(t *testing.T) {
 		},
 		{
 			Name:    "insufficient balance",
-			Handler: transactHandler(usecase.ErrInsufficientBalance),
+			Handler: transactHandler(transactions.ErrInsufficientBalance),
 			Req: TransactionRequest{
 				AccountID:   "4442011c-e531-4703-b264-c3d700750f81",
 				OperationID: operations.Debit,
@@ -81,7 +81,7 @@ func Test_ProcessTransaction(t *testing.T) {
 		},
 		{
 			Name:    "insufficient credit",
-			Handler: transactHandler(usecase.ErrInsufficientCredit),
+			Handler: transactHandler(transactions.ErrInsufficientCredit),
 			Req: TransactionRequest{
 				AccountID:   "4442011c-e531-4703-b264-c3d700750f81",
 				OperationID: operations.Credit,
@@ -120,7 +120,7 @@ func Test_ProcessTransaction(t *testing.T) {
 
 func transactHandler(err error) Handler {
 	return Handler{
-		Usecase: &usecase.TransactionsMockUsecase{
+		Usecase: &transactions.TransactionsMockUsecase{
 			TransactFunc: func(ctx context.Context, accID vos.AccountID, op operations.Operation, amount vos.Money) (vos.TransactionID, error) {
 				return vos.TransactionID(uuid.NewString()), err
 			},

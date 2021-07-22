@@ -8,6 +8,6 @@ import (
 )
 
 // Transact executes a transaction
-func (u Usecase) Transact(ctx context.Context, accID vos.AccountID, op operations.Operation, amount vos.Money) (vos.TransactionID, error) {
+func (u TransactionsUsecase) Transact(ctx context.Context, accID vos.AccountID, op operations.Operation, amount vos.Money) (vos.TransactionID, error) {
 	return "", nil
 }

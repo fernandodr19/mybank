@@ -2,7 +2,10 @@ package responses
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
+
+	"github.com/fernandodr19/mybank/pkg/domain/usecases/transactions"
 )
 
 // Response represents an API response
@@ -48,8 +51,10 @@ var (
 
 // accounts
 var (
-	ErrInvalidUserID   = ErrorPayload{Error: Error{Code: "error:invalid_user_id", Description: "Invalid user id"}}
-	ErrAccountNotFound = ErrorPayload{Error: Error{Code: "error:account_not_found", Description: "Account not found"}}
+	ErrInvalidUserID       = ErrorPayload{Error: Error{Code: "error:invalid_user_id", Description: "Invalid user id"}}
+	ErrAccountNotFound     = ErrorPayload{Error: Error{Code: "error:account_not_found", Description: "Account not found"}}
+	ErrInsufficientBalance = ErrorPayload{Error: Error{Code: "error:insufficient_balance", Description: "Insufficient balance"}}
+	ErrInsufficientCredit  = ErrorPayload{Error: Error{Code: "error:insufficient_credit", Description: "Insufficient credit"}}
 	// insufficient balance
 	// insufficient credit
 )
@@ -57,6 +62,12 @@ var (
 // ErrorResponse maps response error
 func ErrorResponse(err error) Response {
 	switch {
+	case errors.Is(err, transactions.ErrAccountNotFound):
+		return NotFound(err, ErrAccountNotFound)
+	case errors.Is(err, transactions.ErrInsufficientBalance):
+		return UnprocessableEntity(err, ErrInsufficientBalance)
+	case errors.Is(err, transactions.ErrInsufficientCredit):
+		return UnprocessableEntity(err, ErrInsufficientCredit)
 	default:
 		return InternalServerError(err)
 	}

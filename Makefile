@@ -37,6 +37,15 @@ endif
 
 	$$(go env GOPATH)/bin/golangci-lint run -c ./.golangci.yml ./...
 
+.PHONY: generate
+generate:
+	@echo "Go Generating"
+	go get github.com/matryer/moq@v0.2.1
+	go get -u github.com/swaggo/swag/cmd/swag@v1.6.7
+	go generate ./...
+	swag init -g ./cmd/api/main.go -o ./docs/swagger
+	go mod tidy
+
 .PHONY: test-coverage
 test-coverage:
 	@echo "Running tests"

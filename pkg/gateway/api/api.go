@@ -6,6 +6,7 @@ import (
 	app "github.com/fernandodr19/mybank/pkg"
 	"github.com/fernandodr19/mybank/pkg/config"
 	"github.com/fernandodr19/mybank/pkg/gateway/api/middleware"
+	"github.com/fernandodr19/mybank/pkg/gateway/api/transactions"
 
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -21,9 +22,9 @@ func BuildHandler(app *app.App, cfg *config.Config) (http.Handler, error) {
 	r.PathPrefix("/healthcheck").HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) }).Methods(http.MethodGet)
 	r.PathPrefix("/docs/v1/mybank/transactions/swagger").Handler(http_swagger.WrapHandler).Methods(http.MethodGet)
 
-	// publicV1 := r.PathPrefix("/api/v1").Subrouter()
-	// adminV1 := r.PathPrefix("/admin/v1").Subrouter()
-	// accounts.NewHandler(publicV1, adminV1, app.Accounts, auth)
+	publicV1 := r.PathPrefix("/api/v1").Subrouter()
+	adminV1 := r.PathPrefix("/admin/v1").Subrouter()
+	transactions.NewHandler(publicV1, adminV1, *app.Transactions)
 
 	recovery := negroni.NewRecovery()
 	recovery.PrintStack = false

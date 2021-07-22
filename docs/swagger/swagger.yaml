@@ -1,0 +1,51 @@
+definitions:
+  transactions.TransactionRequest:
+    properties:
+      account_id:
+        type: string
+      amount:
+        type: integer
+      operation_type_id:
+        type: integer
+    type: object
+  transactions.TransactionResponse:
+    properties:
+      transaction_id:
+        type: string
+    type: object
+info:
+  contact: {}
+  license: {}
+paths:
+  /accounts:
+    post:
+      consumes:
+      - application/json
+      description: Process a transaction for a given account
+      parameters:
+      - description: Body
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/transactions.TransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/transactions.TransactionResponse'
+        "400":
+          description: Could not parse request
+        "404":
+          description: Account not found
+        "422":
+          description: Could not process transaction due to lack of balance or available
+            credit
+        "500":
+          description: Internal server error
+      summary: Process a transaction
+      tags:
+      - Transactions
+swagger: "2.0"

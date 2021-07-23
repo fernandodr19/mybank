@@ -4,6 +4,7 @@ OS ?= linux
 GIT_COMMIT=$(shell git rev-parse HEAD)
 GIT_BUILD_TIME=$(shell date '+%Y-%m-%d__%I:%M:%S%p')
 DOCKER_COMPOSE_FILE=docker-compose.yml
+SQLC_CONFIG_FILE=pkg/gateway/db/postgres/sqlc/config/sqlc.yaml
 
 .PHONY: test
 test:
@@ -44,13 +45,11 @@ generate:
 	go get -u github.com/swaggo/swag/cmd/swag@v1.6.7
 	go generate ./...
 	swag init -g ./cmd/api/main.go -o ./docs/swagger
-	go mod tidy
-
-.PHONY: protogen
-protogen:
+	@./pkg/gateway/db/postgres/sqlc/config/sqlc-dev generate -f $(SQLC_CONFIG_FILE)
 	go get google.golang.org/protobuf/cmd/protoc-gen-go
 	go get google.golang.org/grpc/cmd/protoc-gen-go-grpc
 	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative pkg/gateway/grpc/accounts/accounts.proto
+	go mod tidy
 
 .PHONY: test-coverage
 test-coverage:

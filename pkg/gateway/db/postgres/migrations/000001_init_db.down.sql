@@ -1,5 +1,5 @@
 BEGIN;
 
-DROP TABLE accounts;
+DROP TABLE transactions;
 
 COMMIT;

@@ -120,7 +120,7 @@ func Test_ProcessTransaction(t *testing.T) {
 
 func transactHandler(err error) Handler {
 	return Handler{
-		Usecase: &transactions.TransactionsMockUsecase{
+		Usecase: &TransactionsMockUsecase{
 			TransactFunc: func(ctx context.Context, accID vos.AccountID, op operations.Operation, amount vos.Money) (vos.TransactionID, error) {
 				return vos.TransactionID(uuid.NewString()), err
 			},

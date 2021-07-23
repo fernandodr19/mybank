@@ -6,10 +6,10 @@ import (
 
 // App contains application's usecases
 type App struct {
-	Transactions *transactions.Usecase
+	Transactions *transactions.TransactionsUsecase
 }
 
-func BuildApp(txUsecase *transactions.Usecase) (*App, error) {
+func BuildApp(txUsecase *transactions.TransactionsUsecase) (*App, error) {
 	return &App{
 		Transactions: txUsecase,
 	}, nil

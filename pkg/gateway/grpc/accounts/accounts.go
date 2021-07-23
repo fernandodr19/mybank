@@ -4,10 +4,13 @@ import (
 	"context"
 
 	"github.com/fernandodr19/mybank-tx/pkg/domain"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/usecases/transactions"
 	"github.com/fernandodr19/mybank-tx/pkg/domain/vos"
 	"github.com/fernandodr19/mybank-tx/pkg/instrumentation/logger"
 	"google.golang.org/grpc"
 )
+
+var _ transactions.AccountsClient = &Client{}
 
 // Client gRPC of accounts
 type Client struct {
@@ -21,10 +24,6 @@ func NewClient(conn *grpc.ClientConn) *Client {
 	}
 
 }
-
-// Deposit(ctx context.Context, accID vos.AccountID, amount vos.Money) error
-// Withdrawal(ctx context.Context, accID vos.AccountID, amount vos.Money) error
-// ReserveCreditLimit(ctx context.Context, accID vos.AccountID, amount vos.Money) error
 
 // Deposit requests a deposit to the accounts server
 func (c Client) Deposit(ctx context.Context, accID vos.AccountID, amount vos.Money) error {

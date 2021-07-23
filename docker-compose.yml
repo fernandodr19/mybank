@@ -15,6 +15,7 @@ services:
 
   mybanktx_api:
     container_name: mybanktx_api
+    network_mode: host
     build: .
     ports:
       - 3000:3000

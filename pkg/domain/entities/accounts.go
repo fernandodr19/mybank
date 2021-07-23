@@ -3,7 +3,7 @@ package entities
 import (
 	"time"
 
-	"github.com/fernandodr19/mybank/pkg/domain/vos"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/vos"
 )
 
 type Account struct {

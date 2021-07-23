@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/fernandodr19/mybank/pkg/domain/usecases/transactions"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/usecases/transactions"
 )
 
 // App contains application's usecases

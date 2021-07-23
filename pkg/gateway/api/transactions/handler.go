@@ -3,8 +3,8 @@ package transactions
 import (
 	"net/http"
 
-	"github.com/fernandodr19/mybank/pkg/domain/usecases/transactions"
-	"github.com/fernandodr19/mybank/pkg/gateway/api/middleware"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/usecases/transactions"
+	"github.com/fernandodr19/mybank-tx/pkg/gateway/api/middleware"
 
 	"github.com/gorilla/mux"
 )

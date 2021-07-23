@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/fernandodr19/mybank/pkg/domain"
-	"github.com/fernandodr19/mybank/pkg/domain/entities/operations"
-	"github.com/fernandodr19/mybank/pkg/domain/vos"
-	"github.com/fernandodr19/mybank/pkg/gateway/api/responses"
+	"github.com/fernandodr19/mybank-tx/pkg/domain"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/entities/operations"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/vos"
+	"github.com/fernandodr19/mybank-tx/pkg/gateway/api/responses"
 )
 
 // Transact executes a transaction

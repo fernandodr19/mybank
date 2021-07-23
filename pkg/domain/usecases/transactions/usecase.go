@@ -3,9 +3,9 @@ package transactions
 import (
 	"context"
 
-	"github.com/fernandodr19/mybank/pkg/domain/entities"
-	"github.com/fernandodr19/mybank/pkg/domain/entities/operations"
-	"github.com/fernandodr19/mybank/pkg/domain/vos"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/entities"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/entities/operations"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/vos"
 )
 
 //go:generate moq -skip-ensure -stub -out mocks.gen.go . Usecase:TransactionsMockUsecase

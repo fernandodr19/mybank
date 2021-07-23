@@ -3,10 +3,10 @@ package transactions
 import (
 	"context"
 
-	"github.com/fernandodr19/mybank/pkg/domain"
-	"github.com/fernandodr19/mybank/pkg/domain/entities"
-	"github.com/fernandodr19/mybank/pkg/domain/entities/operations"
-	"github.com/fernandodr19/mybank/pkg/domain/vos"
+	"github.com/fernandodr19/mybank-tx/pkg/domain"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/entities"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/entities/operations"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/vos"
 )
 
 // Transact executes a transaction

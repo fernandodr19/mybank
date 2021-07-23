@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/fernandodr19/mybank/pkg/gateway/api/responses"
-	"github.com/fernandodr19/mybank/pkg/gateway/api/shared"
-	"github.com/fernandodr19/mybank/pkg/instrumentation/logger"
+	"github.com/fernandodr19/mybank-tx/pkg/gateway/api/responses"
+	"github.com/fernandodr19/mybank-tx/pkg/gateway/api/shared"
+	"github.com/fernandodr19/mybank-tx/pkg/instrumentation/logger"
 	"github.com/google/uuid"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"

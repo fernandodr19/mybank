@@ -7,9 +7,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/fernandodr19/mybank/pkg/gateway/grpc/accounts"
-	"github.com/fernandodr19/mybank/pkg/instrumentation/logger"
-	"github.com/fernandodr19/mybank/pkg/tests/servers"
+	"github.com/fernandodr19/mybank-tx/pkg/gateway/grpc/accounts"
+	"github.com/fernandodr19/mybank-tx/pkg/instrumentation/logger"
+	"github.com/fernandodr19/mybank-tx/pkg/tests/servers"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
 )

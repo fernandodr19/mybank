@@ -5,7 +5,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/fernandodr19/mybank/pkg/domain/usecases/transactions"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/usecases/transactions"
 )
 
 // Response represents an API response

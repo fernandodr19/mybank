@@ -3,7 +3,7 @@ package servers
 import (
 	"context"
 
-	"github.com/fernandodr19/mybank/pkg/gateway/grpc/accounts"
+	"github.com/fernandodr19/mybank-tx/pkg/gateway/grpc/accounts"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"
 )

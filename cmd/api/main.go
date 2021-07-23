@@ -6,8 +6,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/fernandodr19/mybank/pkg/gateway/grpc/accounts"
-	"github.com/fernandodr19/mybank/pkg/instrumentation/logger"
+	"github.com/fernandodr19/mybank-tx/pkg/gateway/grpc/accounts"
+	"github.com/fernandodr19/mybank-tx/pkg/instrumentation/logger"
 
 	"google.golang.org/grpc"
 )

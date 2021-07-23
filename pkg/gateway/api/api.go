@@ -3,10 +3,10 @@ package api
 import (
 	"net/http"
 
-	app "github.com/fernandodr19/mybank/pkg"
-	"github.com/fernandodr19/mybank/pkg/config"
-	"github.com/fernandodr19/mybank/pkg/gateway/api/middleware"
-	"github.com/fernandodr19/mybank/pkg/gateway/api/transactions"
+	app "github.com/fernandodr19/mybank-tx/pkg"
+	"github.com/fernandodr19/mybank-tx/pkg/config"
+	"github.com/fernandodr19/mybank-tx/pkg/gateway/api/middleware"
+	"github.com/fernandodr19/mybank-tx/pkg/gateway/api/transactions"
 
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"

@@ -1,4 +1,4 @@
-module github.com/fernandodr19/mybank
+module github.com/fernandodr19/mybank-tx
 
 go 1.16
 

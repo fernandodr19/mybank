@@ -3,8 +3,8 @@ package entities
 import (
 	"time"
 
-	"github.com/fernandodr19/mybank/pkg/domain/entities/operations"
-	"github.com/fernandodr19/mybank/pkg/domain/vos"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/entities/operations"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/vos"
 )
 
 type Transaction struct {

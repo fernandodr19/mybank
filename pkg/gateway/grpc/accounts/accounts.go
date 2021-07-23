@@ -3,9 +3,9 @@ package accounts
 import (
 	"context"
 
-	"github.com/fernandodr19/mybank/pkg/domain"
-	"github.com/fernandodr19/mybank/pkg/domain/vos"
-	"github.com/fernandodr19/mybank/pkg/instrumentation/logger"
+	"github.com/fernandodr19/mybank-tx/pkg/domain"
+	"github.com/fernandodr19/mybank-tx/pkg/domain/vos"
+	"github.com/fernandodr19/mybank-tx/pkg/instrumentation/logger"
 	"google.golang.org/grpc"
 )
 

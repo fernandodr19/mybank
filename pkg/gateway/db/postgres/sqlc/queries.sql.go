@@ -9,7 +9,7 @@ import (
 
 const saveTransaction = `-- name: SaveTransaction :one
 INSERT INTO transactions (account_id, operation_type, amount)
-VALUES ($1::string, $2::int, $3::int)
+VALUES ($1, $2::int, $3::int)
 RETURNING id
 `
 

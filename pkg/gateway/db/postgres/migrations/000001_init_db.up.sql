@@ -8,6 +8,12 @@ CREATE TABLE operation_types
     description text
 );
 
+INSERT INTO operation_types (id, description)
+VALUES (1, 'DEBIT'),
+      (2, 'CREDIT'),
+      (3, 'WITHDRAWAL'),
+      (4, 'PAYMENT');
+
 CREATE TABLE transactions
 (
     id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

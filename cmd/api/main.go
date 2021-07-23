@@ -20,7 +20,7 @@ func main() {
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial(":9000", grpc.WithInsecure())
 	if err != nil {
-		log.WithError(err).Errorln("failed connecting grpc")
+		log.WithError(err).Fatalln("failed connecting grpc")
 	}
 	defer conn.Close()
 	accClient := accounts.NewClient(conn)

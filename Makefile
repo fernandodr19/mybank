@@ -62,4 +62,10 @@ test-coverage:
 setup-dev:
 	@echo "Setting up dev environment"
 	@docker-compose -f $(DOCKER_COMPOSE_FILE) down
-	@docker-compose -f $(DOCKER_COMPOSE_FILE) up -d
+	@docker-compose -f $(DOCKER_COMPOSE_FILE) up --d mybanktx_db
+
+.PHONY: docker-run
+docker-run:
+	@echo "Running application on docker"
+	@docker-compose -f $(DOCKER_COMPOSE_FILE) down
+	@docker-compose -f $(DOCKER_COMPOSE_FILE) up --build

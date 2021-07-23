@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  mybanktx-db:
-    container_name: mybank-db
+  mybanktx_db:
+    container_name: mybanktx_db
     image: postgres:13.2
     ports:
       - 5433:5432
@@ -12,6 +12,17 @@ services:
       POSTGRES_DB: mybanktx
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+
+  mybanktx_api:
+    container_name: mybanktx_api
+    build: .
+    ports:
+      - 3000:3000
+    restart: always
+    environment:
+      DATABASE_HOST: mybanktx_db
+    depends_on:
+      - mybanktx_db
 
 volumes:
   postgres-data:

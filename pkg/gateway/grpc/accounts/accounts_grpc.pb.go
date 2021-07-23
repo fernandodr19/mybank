@@ -18,7 +18,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AccountsServiceClient interface {
-	Deposit(ctx context.Context, in *DepositRequest, opts ...grpc.CallOption) (*Response, error)
+	Deposit(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	Withdrawal(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	ReserveCreditLimit(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
 }
 
 type accountsServiceClient struct {
@@ -29,9 +31,27 @@ func NewAccountsServiceClient(cc grpc.ClientConnInterface) AccountsServiceClient
 	return &accountsServiceClient{cc}
 }
 
-func (c *accountsServiceClient) Deposit(ctx context.Context, in *DepositRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *accountsServiceClient) Deposit(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
 	err := c.cc.Invoke(ctx, "/AccountsService/Deposit", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountsServiceClient) Withdrawal(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/AccountsService/Withdrawal", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountsServiceClient) ReserveCreditLimit(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/AccountsService/ReserveCreditLimit", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +62,9 @@ func (c *accountsServiceClient) Deposit(ctx context.Context, in *DepositRequest,
 // All implementations must embed UnimplementedAccountsServiceServer
 // for forward compatibility
 type AccountsServiceServer interface {
-	Deposit(context.Context, *DepositRequest) (*Response, error)
+	Deposit(context.Context, *Request) (*Response, error)
+	Withdrawal(context.Context, *Request) (*Response, error)
+	ReserveCreditLimit(context.Context, *Request) (*Response, error)
 	mustEmbedUnimplementedAccountsServiceServer()
 }
 
@@ -50,8 +72,14 @@ type AccountsServiceServer interface {
 type UnimplementedAccountsServiceServer struct {
 }
 
-func (UnimplementedAccountsServiceServer) Deposit(context.Context, *DepositRequest) (*Response, error) {
+func (UnimplementedAccountsServiceServer) Deposit(context.Context, *Request) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Deposit not implemented")
+}
+func (UnimplementedAccountsServiceServer) Withdrawal(context.Context, *Request) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Withdrawal not implemented")
+}
+func (UnimplementedAccountsServiceServer) ReserveCreditLimit(context.Context, *Request) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReserveCreditLimit not implemented")
 }
 func (UnimplementedAccountsServiceServer) mustEmbedUnimplementedAccountsServiceServer() {}
 
@@ -67,7 +95,7 @@ func RegisterAccountsServiceServer(s grpc.ServiceRegistrar, srv AccountsServiceS
 }
 
 func _AccountsService_Deposit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DepositRequest)
+	in := new(Request)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -79,7 +107,43 @@ func _AccountsService_Deposit_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: "/AccountsService/Deposit",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountsServiceServer).Deposit(ctx, req.(*DepositRequest))
+		return srv.(AccountsServiceServer).Deposit(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountsService_Withdrawal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountsServiceServer).Withdrawal(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/AccountsService/Withdrawal",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountsServiceServer).Withdrawal(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountsService_ReserveCreditLimit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountsServiceServer).ReserveCreditLimit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/AccountsService/ReserveCreditLimit",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountsServiceServer).ReserveCreditLimit(ctx, req.(*Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -94,6 +158,14 @@ var AccountsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Deposit",
 			Handler:    _AccountsService_Deposit_Handler,
+		},
+		{
+			MethodName: "Withdrawal",
+			Handler:    _AccountsService_Withdrawal_Handler,
+		},
+		{
+			MethodName: "ReserveCreditLimit",
+			Handler:    _AccountsService_ReserveCreditLimit_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -16,7 +16,6 @@ type Usecase interface {
 }
 
 type AccountsClient interface {
-	GetAccountDetails(ctx context.Context, accID vos.AccountID) (entities.Account, error)
 	Deposit(ctx context.Context, accID vos.AccountID, amount vos.Money) error
 	Withdrawal(ctx context.Context, accID vos.AccountID, amount vos.Money) error
 	ReserveCreditLimit(ctx context.Context, accID vos.AccountID, amount vos.Money) error

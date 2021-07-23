@@ -2,9 +2,9 @@ syntax = "proto3";
 
 option go_package = "github.com/fernandndo19/mybank/gateway/grpc/accounts";
 
-message DepositRequest {
+message Request {
     string accountID = 1;
-    string amount = 2;
+    sfixed64 amount = 2;
 }
 
 message Response {
@@ -14,5 +14,7 @@ message Response {
 }
 
 service AccountsService {
-    rpc Deposit(DepositRequest) returns (Response) {}
+    rpc Deposit(Request) returns (Response) {}
+    rpc Withdrawal(Request) returns (Response) {}
+    rpc ReserveCreditLimit(Request) returns (Response) {}
 }

@@ -25,12 +25,19 @@ func main() {
 	defer conn.Close()
 	accClient := accounts.NewClient(conn)
 
-	acc, err := accClient.GetAccountDetails(context.Background(), "")
+	err = accClient.Deposit(context.Background(), "", 11212)
 	if err != nil {
-		log.WithError(err).Fatal("failed getting acc")
+		log.WithError(err).Fatal("failed deposit")
+	}
+	err = accClient.Withdrawal(context.Background(), "", 11212)
+	if err != nil {
+		log.WithError(err).Fatal("failed withdraw")
+	}
+	err = accClient.ReserveCreditLimit(context.Background(), "", 11212)
+	if err != nil {
+		log.WithError(err).Fatal("failed reserve")
 	}
 	log.Infoln("UUHUUUL")
-	log.Infoln(acc)
 
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt, syscall.SIGTERM)

@@ -11,6 +11,7 @@ import (
 type Config struct {
 	AppName string `envconfig:"APP_NAME" default:"mybank"`
 	API
+	AccountsClient
 	Swagger
 	Postgres
 }
@@ -19,6 +20,10 @@ type Config struct {
 type API struct {
 	Port            string        `envconfig:"PORT" default:"3000"`
 	ShutdownTimeout time.Duration `envconfig:"APP_SHUTDOWN_TIMEOUT" default:"5s"`
+}
+
+type AccountsClient struct {
+	URL string `envconfig:"ACCOUNTS_URL" default:":9000" required:"true"`
 }
 
 // Address returns API address

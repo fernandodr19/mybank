@@ -45,23 +45,30 @@ func setup() func() {
 
 func Test_Deposit(t *testing.T) {
 	testTable := []struct {
-		Name string
+		Name        string
+		Setup       func()
+		ExpectError bool
 	}{
 		{
 			Name: "deposit happy path",
 		},
+		{
+			Name: "deposit error",
+			Setup: func() {
+				testEnv.AccountsServer.OnDeposit = func(ctx context.Context, req *accounts.Request) (*accounts.Response, error) {
+					return nil, errors.New("deposit unknown error")
+				}
+			},
+			ExpectError: true,
+		},
 	}
 	for _, tt := range testTable {
 		t.Run(tt.Name, func(t *testing.T) {
-			err := testEnv.AccoutsClient.Deposit(context.Background(), "123", 999)
-			assert.NoError(t, err)
-
-			testEnv.AccountsServer.OnDeposit = func(ctx context.Context, req *accounts.Request) (*accounts.Response, error) {
-				return nil, errors.New("asa")
+			if tt.Setup != nil {
+				tt.Setup()
 			}
-			err = testEnv.AccoutsClient.Deposit(context.Background(), "123", 999)
-			assert.Error(t, err)
-
+			err := testEnv.AccoutsClient.Deposit(context.Background(), "123", 999)
+			assert.Equal(t, tt.ExpectError, err != nil)
 		})
 	}
 }

@@ -11,7 +11,7 @@ import (
 )
 
 // Transact executes a transaction
-func (u TransactionsUsecase) Transact(ctx context.Context, accID vos.AccountID, op operations.Operation, amount vos.Money) (vos.TransactionID, error) {
+func (u Usecase) Transact(ctx context.Context, accID vos.AccountID, op operations.Operation, amount vos.Money) (vos.TransactionID, error) {
 	const operation = "transactions.TransactionUsecase.Transact"
 
 	//validate acc id
@@ -54,7 +54,7 @@ func (u TransactionsUsecase) Transact(ctx context.Context, accID vos.AccountID, 
 	return txID, nil
 }
 
-func (u TransactionsUsecase) handleDebit(ctx context.Context, accID vos.AccountID, amount vos.Money) error {
+func (u Usecase) handleDebit(ctx context.Context, accID vos.AccountID, amount vos.Money) error {
 	const operation = "transactions.TransactionUsecase.handleDebit"
 	err := u.accountsClient.Withdrawal(ctx, accID, amount)
 	if err != nil {
@@ -63,7 +63,7 @@ func (u TransactionsUsecase) handleDebit(ctx context.Context, accID vos.AccountI
 	return nil
 }
 
-func (u TransactionsUsecase) handleCredit(ctx context.Context, accID vos.AccountID, amount vos.Money) error {
+func (u Usecase) handleCredit(ctx context.Context, accID vos.AccountID, amount vos.Money) error {
 	const operation = "transactions.TransactionUsecase.handleCredit"
 	err := u.accountsClient.ReserveCreditLimit(ctx, accID, amount)
 	if err != nil {
@@ -72,7 +72,7 @@ func (u TransactionsUsecase) handleCredit(ctx context.Context, accID vos.Account
 	return nil
 }
 
-func (u TransactionsUsecase) handleWithdrawal(ctx context.Context, accID vos.AccountID, amount vos.Money) error {
+func (u Usecase) handleWithdrawal(ctx context.Context, accID vos.AccountID, amount vos.Money) error {
 	const operation = "transactions.TransactionUsecase.handleWithdrawal"
 	err := u.accountsClient.Withdrawal(ctx, accID, amount)
 	if err != nil {
@@ -81,7 +81,7 @@ func (u TransactionsUsecase) handleWithdrawal(ctx context.Context, accID vos.Acc
 	return nil
 }
 
-func (u TransactionsUsecase) handlePayment(ctx context.Context, accID vos.AccountID, amount vos.Money) error {
+func (u Usecase) handlePayment(ctx context.Context, accID vos.AccountID, amount vos.Money) error {
 	const operation = "transactions.TransactionUsecase.handlePayment"
 	err := u.accountsClient.Deposit(ctx, accID, amount)
 	if err != nil {

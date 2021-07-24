@@ -14,7 +14,7 @@ import (
 
 //go:generate moq -skip-ensure -stub -out mocks.gen.go . Usecase:TransactionsMockUsecase
 
-var _ Usecase = &transactions.TransactionsUsecase{}
+var _ Usecase = &transactions.Usecase{}
 
 // Usecase of transactions
 type Usecase interface {

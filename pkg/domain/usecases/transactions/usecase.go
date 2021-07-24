@@ -18,13 +18,13 @@ type Repository interface {
 	SaveTransaction(context.Context, entities.Transaction) (vos.TransactionID, error)
 }
 
-type TransactionsUsecase struct {
+type Usecase struct {
 	transactionsRepo Repository
 	accountsClient   AccountsClient
 }
 
-func NewUsecase(txRepo Repository, accClient AccountsClient) *TransactionsUsecase {
-	return &TransactionsUsecase{
+func NewUsecase(txRepo Repository, accClient AccountsClient) *Usecase {
+	return &Usecase{
 		transactionsRepo: txRepo,
 		accountsClient:   accClient,
 	}

@@ -25,7 +25,7 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/accounts": {
+        "/transactions": {
             "post": {
                 "description": "Process a transaction for a given account",
                 "consumes": [

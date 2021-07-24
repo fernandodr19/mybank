@@ -22,7 +22,7 @@ import (
 // @Failure 404 "Account not found"
 // @Failure 422 "Could not process transaction due to lack of balance or available credit"
 // @Failure 500 "Internal server error"
-// @Router /accounts [post]
+// @Router /transactions [post]
 func (h Handler) Transact(r *http.Request) responses.Response {
 	operation := "transactions.Handler.Transact"
 

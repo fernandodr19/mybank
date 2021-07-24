@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
-	"os"
-	"os/signal"
-	"syscall"
+	"net/http"
+	"time"
 
-	"github.com/fernandodr19/mybank-tx/pkg/gateway/grpc/accounts"
+	app "github.com/fernandodr19/mybank-tx/pkg"
+	"github.com/fernandodr19/mybank-tx/pkg/config"
+	"github.com/fernandodr19/mybank-tx/pkg/gateway/api"
+	"github.com/fernandodr19/mybank-tx/pkg/gateway/db/postgres"
 	"github.com/fernandodr19/mybank-tx/pkg/instrumentation/logger"
 
 	"google.golang.org/grpc"
@@ -16,31 +18,50 @@ func main() {
 	log := logger.Default()
 	log.Infoln("=== My Bank API ===")
 
-	// GRPC
-	var conn *grpc.ClientConn
-	conn, err := grpc.Dial(":9000", grpc.WithInsecure())
+	// Load config
+	cfg, err := config.Load()
+	if err != nil {
+		log.WithError(err).Fatal("failed loading config")
+	}
+
+	ctx := context.Background()
+
+	// Setup postgres
+	dbConn, err := postgres.NewConnection(ctx, cfg.Postgres)
+	if err != nil {
+		log.WithError(err).Fatal("failed setting up postgres")
+	}
+
+	// gRPC
+	grpcConn, err := grpc.Dial(cfg.AccountsClient.URL, grpc.WithInsecure())
 	if err != nil {
 		log.WithError(err).Fatalln("failed connecting grpc")
 	}
-	defer conn.Close()
-	accClient := accounts.NewClient(conn)
+	defer grpcConn.Close()
 
-	err = accClient.Deposit(context.Background(), "", 11212)
+	// Build app
+	app, err := app.BuildApp(dbConn, grpcConn)
 	if err != nil {
-		log.WithError(err).Fatal("failed deposit")
+		log.WithError(err).Fatalln("failed to build app")
 	}
-	err = accClient.Withdrawal(context.Background(), "", 11212)
-	if err != nil {
-		log.WithError(err).Fatal("failed withdraw")
-	}
-	err = accClient.ReserveCreditLimit(context.Background(), "", 11212)
-	if err != nil {
-		log.WithError(err).Fatal("failed reserve")
-	}
-	log.Infoln("UUHUUUL")
 
-	signals := make(chan os.Signal, 1)
-	signal.Notify(signals, os.Interrupt, syscall.SIGTERM)
-	<-signals
-	signal.Stop(signals)
+	// Build API handler
+	apiHandler, err := api.BuildHandler(app, cfg)
+	if err != nil {
+		log.WithError(err).Fatalln("failed to build api")
+	}
+
+	serveApp(apiHandler, cfg)
+}
+
+func serveApp(apiHandler http.Handler, cfg *config.Config) {
+	server := &http.Server{
+		Handler:      apiHandler,
+		Addr:         cfg.API.Address(),
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+
+	logger.Default().WithField("address", cfg.API.Address()).Info("server starting...")
+	logger.Default().Fatal(server.ListenAndServe())
 }

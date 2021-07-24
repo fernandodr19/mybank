@@ -41,7 +41,7 @@ type Postgres struct {
 	Password string `envconfig:"DATABASE_PASSWORD" default:"postgres"`
 	Host     string `envconfig:"DATABASE_HOST" default:"localhost"`
 	Port     string `envconfig:"DATABASE_PORT" default:"5433"`
-	DBName   string `envconfig:"DATABASE_NAME" default:"dev"`
+	DBName   string `envconfig:"DATABASE_NAME" default:"mybanktx"`
 	SSLMode  string `envconfig:"DATABASE_SSLMODE" default:"sslmode=disable"`
 }
 

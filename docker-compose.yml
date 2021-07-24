@@ -21,7 +21,7 @@ services:
       - 3000:3000
     restart: always
     environment:
-      DATABASE_HOST: mybanktx_db
+      DATABASE_NAME: mybanktx
     depends_on:
       - mybanktx_db
 

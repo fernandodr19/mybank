@@ -7,12 +7,22 @@ import (
 	"github.com/fernandodr19/mybank-tx/pkg/domain/entities"
 	"github.com/fernandodr19/mybank-tx/pkg/domain/entities/operations"
 	"github.com/fernandodr19/mybank-tx/pkg/domain/vos"
+	"github.com/fernandodr19/mybank-tx/pkg/instrumentation/logger"
 	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
 )
 
 // Transact executes a transaction
 func (u Usecase) Transact(ctx context.Context, accID vos.AccountID, op operations.Operation, amount vos.Money) (vos.TransactionID, error) {
 	const operation = "transactions.TransactionUsecase.Transact"
+
+	log := logger.FromCtx(ctx).WithFields(logrus.Fields{
+		"accID":     accID,
+		"operation": op.String(),
+		"amout":     amount.Int(),
+	})
+
+	log.Infoln("processing transaction")
 
 	//validate acc id
 	_, err := uuid.Parse(accID.String())
@@ -50,6 +60,8 @@ func (u Usecase) Transact(ctx context.Context, accID vos.AccountID, op operation
 	if err != nil {
 		return "", domain.Error(operation, err)
 	}
+
+	log.WithField("txID", txID).Infoln("transaction successfully processed")
 
 	return txID, nil
 }

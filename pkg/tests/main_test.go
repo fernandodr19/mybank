@@ -175,7 +175,7 @@ func setupPostgresTest(cfg config.Postgres) (*pgx.Conn, error) {
 func truncatePostgresTables() {
 	testEnv.Conn.Exec(context.Background(),
 		`TRUNCATE TABLE 
-			accounts
+			transactions
 		CASCADE`,
 	)
 }

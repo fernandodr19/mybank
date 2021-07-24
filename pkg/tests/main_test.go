@@ -4,13 +4,16 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"net/http/httptest"
 	"os"
 	"os/exec"
 	"strings"
 	"testing"
 	"time"
 
+	app "github.com/fernandodr19/mybank-tx/pkg"
 	"github.com/fernandodr19/mybank-tx/pkg/config"
+	"github.com/fernandodr19/mybank-tx/pkg/gateway/api"
 	"github.com/fernandodr19/mybank-tx/pkg/gateway/db/postgres"
 	"github.com/fernandodr19/mybank-tx/pkg/gateway/grpc/accounts"
 	"github.com/fernandodr19/mybank-tx/pkg/instrumentation/logger"
@@ -22,7 +25,10 @@ import (
 )
 
 type _testEnv struct {
-	//Servers
+	// Server
+	Server *httptest.Server
+
+	// 3rd party fake Servers
 	AccountsServer *servers.FakeAccountsServer
 
 	// Clients
@@ -78,6 +84,18 @@ func setup() func() {
 	}
 
 	testEnv.AccoutsClient = accounts.NewClient(grpcConn)
+
+	app, err := app.BuildApp(testEnv.TxRepo, testEnv.AccoutsClient)
+	if err != nil {
+		log.WithError(err).Fatal("failed setting up app")
+	}
+
+	apiHandler, err := api.BuildHandler(app, cfg)
+	if err != nil {
+		log.WithError(err).Fatal("failed setting up app")
+	}
+
+	testEnv.Server = httptest.NewServer(apiHandler)
 
 	return func() {}
 }

@@ -10,8 +10,8 @@ type App struct {
 }
 
 // BuildApp builds application struct with its necessary usecases
-func BuildApp(txUsecase *transactions.TransactionsUsecase) (*App, error) {
+func BuildApp(txRepo transactions.Repository, accClient transactions.AccountsClient) (*App, error) {
 	return &App{
-		Transactions: txUsecase,
+		Transactions: transactions.NewUsecase(txRepo, accClient),
 	}, nil
 }

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/fernandodr19/mybank-tx/pkg/domain/entities/operations"
 	"github.com/fernandodr19/mybank-tx/pkg/domain/usecases/transactions"
 )
 
@@ -51,12 +52,12 @@ var (
 
 // accounts
 var (
-	ErrInvalidUserID       = ErrorPayload{Error: Error{Code: "error:invalid_user_id", Description: "Invalid user id"}}
 	ErrAccountNotFound     = ErrorPayload{Error: Error{Code: "error:account_not_found", Description: "Account not found"}}
 	ErrInsufficientBalance = ErrorPayload{Error: Error{Code: "error:insufficient_balance", Description: "Insufficient balance"}}
 	ErrInsufficientCredit  = ErrorPayload{Error: Error{Code: "error:insufficient_credit", Description: "Insufficient credit"}}
-	// insufficient balance
-	// insufficient credit
+	ErrInvalidAccID        = ErrorPayload{Error: Error{Code: "error:invalid_account_id", Description: "Account id must be a UUIDv4"}}
+	ErrInvalidAmount       = ErrorPayload{Error: Error{Code: "error:invalid_amount", Description: "Amount must be greater than 0"}}
+	ErrInvalidOperation    = ErrorPayload{Error: Error{Code: "error:invalid_operation", Description: "Invalid operation"}}
 )
 
 // ErrorResponse maps response error
@@ -64,6 +65,12 @@ func ErrorResponse(err error) Response {
 	switch {
 	case errors.Is(err, transactions.ErrAccountNotFound):
 		return NotFound(err, ErrAccountNotFound)
+	case errors.Is(err, transactions.ErrInvalidAccID):
+		return BadRequest(err, ErrInvalidAccID)
+	case errors.Is(err, transactions.ErrInvalidAmount):
+		return BadRequest(err, ErrInvalidAmount)
+	case errors.Is(err, operations.ErrInvalidOperation):
+		return BadRequest(err, ErrInvalidOperation)
 	case errors.Is(err, transactions.ErrInsufficientBalance):
 		return UnprocessableEntity(err, ErrInsufficientBalance)
 	case errors.Is(err, transactions.ErrInsufficientCredit):

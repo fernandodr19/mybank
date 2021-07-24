@@ -7,13 +7,24 @@ import (
 	"github.com/fernandodr19/mybank-tx/pkg/domain/entities"
 	"github.com/fernandodr19/mybank-tx/pkg/domain/entities/operations"
 	"github.com/fernandodr19/mybank-tx/pkg/domain/vos"
+	"github.com/google/uuid"
 )
 
 // Transact executes a transaction
 func (u TransactionsUsecase) Transact(ctx context.Context, accID vos.AccountID, op operations.Operation, amount vos.Money) (vos.TransactionID, error) {
 	const operation = "transactions.TransactionUsecase.Transact"
 
-	var err error
+	//validate acc id
+	_, err := uuid.Parse(accID.String())
+	if err != nil {
+		return "", ErrInvalidAccID
+	}
+
+	// validate amount
+	if amount < 0 {
+		return "", ErrInvalidAmount
+	}
+
 	switch op {
 	case operations.Debit:
 		err = u.handleDebit(ctx, accID, amount)

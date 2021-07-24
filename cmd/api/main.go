@@ -5,6 +5,9 @@ import (
 	"net/http"
 	"time"
 
+	_ "github.com/fernandodr19/mybank-tx/docs/swagger"
+	_ "github.com/joho/godotenv/autoload"
+
 	app "github.com/fernandodr19/mybank-tx/pkg"
 	"github.com/fernandodr19/mybank-tx/pkg/config"
 	"github.com/fernandodr19/mybank-tx/pkg/gateway/api"
@@ -14,6 +17,14 @@ import (
 	"google.golang.org/grpc"
 )
 
+// @title Swagger Mybank API
+// @version 1.0
+// @host localhost:3000
+// @basePath /api/v1
+// @schemes http
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+// @description Documentation Mybank API
 func main() {
 	log := logger.Default()
 	log.Infoln("=== My Bank API ===")

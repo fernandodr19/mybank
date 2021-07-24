@@ -1,3 +1,4 @@
+basePath: /api/v1
 definitions:
   transactions.TransactionRequest:
     properties:
@@ -13,9 +14,15 @@ definitions:
       transaction_id:
         type: string
     type: object
+host: localhost:3000
 info:
   contact: {}
-  license: {}
+  description: Documentation Mybank API
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Swagger Mybank API
+  version: "1.0"
 paths:
   /transactions:
     post:
@@ -48,4 +55,6 @@ paths:
       summary: Process a transaction
       tags:
       - Transactions
+schemes:
+- http
 swagger: "2.0"

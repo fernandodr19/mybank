@@ -47,7 +47,7 @@ func Test_Transact(t *testing.T) {
 				OperationID: operations.Debit,
 				Amount:      -10,
 			},
-			ExpectedStatusCode: http.StatusBadRequest,
+			ExpectedStatusCode: http.StatusUnprocessableEntity,
 		},
 		{
 			Name: "invalid operation",
@@ -56,7 +56,7 @@ func Test_Transact(t *testing.T) {
 				OperationID: 0,
 				Amount:      10,
 			},
-			ExpectedStatusCode: http.StatusBadRequest,
+			ExpectedStatusCode: http.StatusUnprocessableEntity,
 		},
 		{
 			Name: "deposit acc server unknown error",

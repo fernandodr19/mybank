@@ -68,9 +68,9 @@ func ErrorResponse(err error) Response {
 	case errors.Is(err, transactions.ErrInvalidAccID):
 		return BadRequest(err, ErrInvalidAccID)
 	case errors.Is(err, transactions.ErrInvalidAmount):
-		return BadRequest(err, ErrInvalidAmount)
+		return UnprocessableEntity(err, ErrInvalidAmount)
 	case errors.Is(err, operations.ErrInvalidOperation):
-		return BadRequest(err, ErrInvalidOperation)
+		return UnprocessableEntity(err, ErrInvalidOperation)
 	case errors.Is(err, transactions.ErrInsufficientBalance):
 		return UnprocessableEntity(err, ErrInsufficientBalance)
 	case errors.Is(err, transactions.ErrInsufficientCredit):

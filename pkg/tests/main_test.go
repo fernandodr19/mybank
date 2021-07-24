@@ -85,7 +85,7 @@ func setup() func() {
 
 	testEnv.AccoutsClient = accounts.NewClient(grpcConn)
 
-	app, err := app.BuildApp(testEnv.TxRepo, testEnv.AccoutsClient)
+	app, err := app.BuildApp(dbConn, grpcConn)
 	if err != nil {
 		log.WithError(err).Fatal("failed setting up app")
 	}

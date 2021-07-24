@@ -76,7 +76,7 @@ func setup() func() {
 
 	testEnv.AccountsServer = servers.NewFakeAccountsServer()
 
-	grpcConn, err := grpc.Dial(":9000", grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) {
+	grpcConn, err := grpc.Dial(cfg.AccountsClient.URL, grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) {
 		return testEnv.AccountsServer.Dial()
 	}), grpc.WithInsecure())
 	if err != nil {

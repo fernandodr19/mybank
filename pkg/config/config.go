@@ -22,13 +22,13 @@ type API struct {
 	ShutdownTimeout time.Duration `envconfig:"APP_SHUTDOWN_TIMEOUT" default:"5s"`
 }
 
-type AccountsClient struct {
-	URL string `envconfig:"ACCOUNTS_URL" default:":9000" required:"true"`
-}
-
 // Address returns API address
 func (a API) Address() string {
 	return fmt.Sprintf(":%s", a.Port)
+}
+
+type AccountsClient struct {
+	URL string `envconfig:"ACCOUNTS_URL" default:":9000" required:"true"`
 }
 
 type Swagger struct {

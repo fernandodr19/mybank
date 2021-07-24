@@ -2,7 +2,6 @@ package tests
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net"
 	"os"
@@ -18,7 +17,6 @@ import (
 	"github.com/fernandodr19/mybank-tx/pkg/tests/servers"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4"
-	"github.com/stretchr/testify/assert"
 	"github.com/testcontainers/testcontainers-go"
 	"google.golang.org/grpc"
 )
@@ -54,7 +52,7 @@ func setup() func() {
 		log.WithError(err).Fatal("failed loading config")
 	}
 
-	err = SetupDockerTest()
+	err = setupDockerTest()
 	if err != nil {
 		log.WithError(err).Fatal("failed setting up docker")
 	}
@@ -62,7 +60,7 @@ func setup() func() {
 	// Setup postgres
 	cfg.Postgres.DBName = "test"
 	cfg.Postgres.Port = "5435"
-	dbConn, err := SetupPostgresTest(cfg.Postgres)
+	dbConn, err := setupPostgresTest(cfg.Postgres)
 	if err != nil {
 		log.WithError(err).Fatal("failed setting up postgres")
 	}
@@ -84,37 +82,7 @@ func setup() func() {
 	return func() {}
 }
 
-func Test_Deposit(t *testing.T) {
-	testTable := []struct {
-		Name        string
-		Setup       func()
-		ExpectError bool
-	}{
-		{
-			Name: "deposit happy path",
-		},
-		{
-			Name: "deposit error",
-			Setup: func() {
-				testEnv.AccountsServer.OnDeposit = func(ctx context.Context, req *accounts.Request) (*accounts.Response, error) {
-					return nil, errors.New("deposit unknown error")
-				}
-			},
-			ExpectError: true,
-		},
-	}
-	for _, tt := range testTable {
-		t.Run(tt.Name, func(t *testing.T) {
-			if tt.Setup != nil {
-				tt.Setup()
-			}
-			err := testEnv.AccoutsClient.Deposit(context.Background(), "123", 999)
-			assert.Equal(t, tt.ExpectError, err != nil)
-		})
-	}
-}
-
-func SetupDockerTest() error {
+func setupDockerTest() error {
 	running, err := isDockerRunning([]string{
 		"pg-test",
 	})
@@ -159,7 +127,7 @@ func isDockerRunning(expectedImages []string) (bool, error) {
 	return running, nil
 }
 
-func SetupPostgresTest(cfg config.Postgres) (*pgx.Conn, error) {
+func setupPostgresTest(cfg config.Postgres) (*pgx.Conn, error) {
 	done := make(chan bool, 1)
 	var dbConn *pgx.Conn
 	var err error
@@ -186,7 +154,7 @@ func SetupPostgresTest(cfg config.Postgres) (*pgx.Conn, error) {
 	return dbConn, nil
 }
 
-func TruncatePostgresTables() {
+func truncatePostgresTables() {
 	testEnv.Conn.Exec(context.Background(),
 		`TRUNCATE TABLE 
 			accounts

@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/fernandodr19/mybank-tx/pkg/domain/entities"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -51,13 +52,17 @@ func Test_TransactionSave(t *testing.T) {
 	}
 	for _, tt := range testTable {
 		t.Run(tt.Name, func(t *testing.T) {
+			defer truncatePostgresTables()
 			txID, err := testEnv.TxRepo.SaveTransaction(context.Background(), tt.Tx)
 			if tt.ExpectError {
 				assert.Error(t, err)
 				return
 			}
 			assert.NoError(t, err)
-			assert.NotEmpty(t, txID)
+
+			//testing tx id (uuid) parse
+			_, err = uuid.Parse(txID.String())
+			assert.NoError(t, err)
 		})
 	}
 }

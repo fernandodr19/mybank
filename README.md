@@ -13,6 +13,7 @@ This microservice handles transaction requests through a REST API. It process in
 - [How to(s)](#make-yourself-at-home)
 - [API doc](#api-doc) 
 - [Project tree](#project-tree) 
+- [Database schema](#database-schema) 
 
 ----------------------------------
 
@@ -66,4 +67,24 @@ $ tree
 │   │   └── grpc # gRPC client infrastructure layer
 │   └── tests # integration tests and test helpers to be used within the project
 │       └── servers # fake servers for integration testing porpuses
+```
+
+### Database schema
+```
+                              Table "public.transactions"
+     Column     |           Type           | Collation | Nullable |      Default       
+----------------+--------------------------+-----------+----------+--------------------
+ id             | uuid                     |           | not null | uuid_generate_v4()
+ account_id     | uuid                     |           | not null | 
+ operation_type | integer                  |           | not null | 
+ amount         | integer                  |           | not null | 
+ created_at     | timestamp with time zone |           | not null | CURRENT_TIMESTAMP
+ updated_at     | timestamp with time zone |           | not null | CURRENT_TIMESTAMP
+Indexes:
+    "transactions_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "fk_operation" FOREIGN KEY (operation_type) REFERENCES operation_types(id)
+Triggers:
+    set_timestamp_transactions BEFORE UPDATE ON transactions FOR EACH ROW EXECUTE FUNCTION trigger_set_timestamp()
+
 ```

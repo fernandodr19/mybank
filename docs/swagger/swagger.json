@@ -66,15 +66,27 @@
     "definitions": {
         "transactions.TransactionRequest": {
             "type": "object",
+            "required": [
+                "account_id",
+                "amount",
+                "operation_type_id"
+            ],
             "properties": {
                 "account_id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "a37c8e2e-4507-4175-ba0e-4f649a8fbe6b"
                 },
                 "amount": {
                     "type": "integer"
                 },
                 "operation_type_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3,
+                        4
+                    ]
                 }
             }
         },

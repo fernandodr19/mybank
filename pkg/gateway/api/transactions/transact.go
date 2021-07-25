@@ -45,9 +45,9 @@ func (h Handler) Transact(r *http.Request) responses.Response {
 
 // TransactionRequest payload
 type TransactionRequest struct {
-	AccountID   vos.AccountID        `json:"account_id"`
-	OperationID operations.Operation `json:"operation_type_id"`
-	Amount      vos.Money            `json:"amount"`
+	AccountID   vos.AccountID        `json:"account_id" example:"a37c8e2e-4507-4175-ba0e-4f649a8fbe6b" validate:"required"`
+	OperationID operations.Operation `json:"operation_type_id" enums:"1,2,3,4" validate:"required"`
+	Amount      vos.Money            `json:"amount" validate:"required"`
 }
 
 // TransactionResponse payload

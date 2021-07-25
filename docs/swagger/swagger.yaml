@@ -3,11 +3,21 @@ definitions:
   transactions.TransactionRequest:
     properties:
       account_id:
+        example: a37c8e2e-4507-4175-ba0e-4f649a8fbe6b
         type: string
       amount:
         type: integer
       operation_type_id:
+        enum:
+        - 1
+        - 2
+        - 3
+        - 4
         type: integer
+    required:
+    - account_id
+    - amount
+    - operation_type_id
     type: object
   transactions.TransactionResponse:
     properties:

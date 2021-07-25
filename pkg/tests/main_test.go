@@ -96,7 +96,7 @@ func setup() func() {
 
 func setupDockerTest() error {
 	running, err := isDockerRunning([]string{
-		"pg-test",
+		"pg-tx-test",
 	})
 	if err != nil {
 		return err

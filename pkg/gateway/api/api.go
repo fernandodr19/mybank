@@ -15,7 +15,7 @@ import (
 )
 
 // BuildHandler builds api handler
-func BuildHandler(app *app.App, cfg *config.Config) (http.Handler, error) {
+func BuildHandler(app *app.App, cfg *config.Config) http.Handler {
 	r := mux.NewRouter()
 
 	r.PathPrefix("/metrics").Handler(promhttp.Handler()).Methods(http.MethodGet)
@@ -33,5 +33,5 @@ func BuildHandler(app *app.App, cfg *config.Config) (http.Handler, error) {
 	n.UseFunc(middleware.AssureRequestID)
 	n.UseHandler(middleware.Cors(r))
 
-	return n, nil
+	return n
 }

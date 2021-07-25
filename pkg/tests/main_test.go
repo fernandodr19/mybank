@@ -65,7 +65,7 @@ func setup() func() {
 
 	// Setup postgres
 	cfg.Postgres.DBName = "test"
-	cfg.Postgres.Port = "5435"
+	cfg.Postgres.Port = "5436"
 	dbConn, err := setupPostgresTest(cfg.Postgres)
 	if err != nil {
 		log.WithError(err).Fatal("failed setting up postgres")
@@ -85,15 +85,9 @@ func setup() func() {
 
 	testEnv.AccoutsClient = accounts.NewClient(grpcConn)
 
-	app, err := app.BuildApp(dbConn, grpcConn)
-	if err != nil {
-		log.WithError(err).Fatal("failed setting up app")
-	}
+	app := app.BuildApp(dbConn, grpcConn)
 
-	apiHandler, err := api.BuildHandler(app, cfg)
-	if err != nil {
-		log.WithError(err).Fatal("failed setting up app")
-	}
+	apiHandler := api.BuildHandler(app, cfg)
 
 	testEnv.Server = httptest.NewServer(apiHandler)
 

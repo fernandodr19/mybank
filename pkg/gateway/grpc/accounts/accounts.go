@@ -80,6 +80,8 @@ func parseServerErr(operation string, err error) error {
 			return transactions.ErrInsufficientBalance
 		case "err::insufficient_credit":
 			return transactions.ErrInsufficientCredit
+		case "err::invalid_amount":
+			return transactions.ErrInvalidAmount
 		}
 	}
 

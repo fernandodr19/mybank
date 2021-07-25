@@ -27,7 +27,7 @@ import (
 // @description Documentation Mybank API
 func main() {
 	log := logger.Default()
-	log.Infoln("=== My Bank API ===")
+	log.Infoln("=== My Bank TX ===")
 
 	// Load config
 	cfg, err := config.Load()
@@ -51,16 +51,10 @@ func main() {
 	defer grpcConn.Close()
 
 	// Build app
-	app, err := app.BuildApp(dbConn, grpcConn)
-	if err != nil {
-		log.WithError(err).Fatalln("failed to build app")
-	}
+	app := app.BuildApp(dbConn, grpcConn)
 
 	// Build API handler
-	apiHandler, err := api.BuildHandler(app, cfg)
-	if err != nil {
-		log.WithError(err).Fatalln("failed to build api")
-	}
+	apiHandler := api.BuildHandler(app, cfg)
 
 	serveApp(apiHandler, cfg)
 }

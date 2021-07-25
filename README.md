@@ -71,15 +71,27 @@ $ tree
 
 ### Database schema
 ```
+             Table "public.operation_types"
+   Column    |  Type   | Nullable | Default 
+-------------+---------+----------+---------
+ id          | integer | not null | 
+ description | text    |          | 
+Indexes:
+    "operation_types_pkey" PRIMARY KEY, btree (id)
+Referenced by:
+    TABLE "transactions" CONSTRAINT "fk_operation" FOREIGN KEY (operation_type) REFERENCES operation_types(id)
+
+--------------------------------------------------------------------------------------------------------------
+
                               Table "public.transactions"
-     Column     |           Type           | Collation | Nullable |      Default       
-----------------+--------------------------+-----------+----------+--------------------
- id             | uuid                     |           | not null | uuid_generate_v4()
- account_id     | uuid                     |           | not null | 
- operation_type | integer                  |           | not null | 
- amount         | integer                  |           | not null | 
- created_at     | timestamp with time zone |           | not null | CURRENT_TIMESTAMP
- updated_at     | timestamp with time zone |           | not null | CURRENT_TIMESTAMP
+     Column     |           Type           | Nullable |      Default       
+----------------+--------------------------+----------+--------------------
+ id             | uuid                     | not null | uuid_generate_v4()
+ account_id     | uuid                     | not null | 
+ operation_type | integer                  | not null | 
+ amount         | integer                  | not null | 
+ created_at     | timestamp with time zone | not null | CURRENT_TIMESTAMP
+ updated_at     | timestamp with time zone | not null | CURRENT_TIMESTAMP
 Indexes:
     "transactions_pkey" PRIMARY KEY, btree (id)
 Foreign-key constraints:

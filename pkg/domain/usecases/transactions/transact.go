@@ -38,10 +38,13 @@ func (u Usecase) Transact(ctx context.Context, accID vos.AccountID, op operation
 	switch op {
 	case operations.Debit:
 		err = u.handleDebit(ctx, accID, amount)
+		amount *= -1
 	case operations.Credit:
 		err = u.handleCredit(ctx, accID, amount)
+		amount *= -1
 	case operations.Withdrawal:
 		err = u.handleWithdrawal(ctx, accID, amount)
+		amount *= -1
 	case operations.Payment:
 		err = u.handlePayment(ctx, accID, amount)
 	default:
